@@ -19,8 +19,14 @@ def create_book():
 
 @books_bp.get("")
 def get_all_books():
-    query = db.select(Book).order_by(Book.id)
-    books = db.session.scalars(query)
+    title_param = request.args.get("title")
+
+    if title_param: 
+        query = db.select(Book).where(Book.title.ilike(f"%{title_param}%")).order_by(Book.id)
+        books = db.session.scalars(query)        
+    else :
+        query = db.select(Book).order_by(Book.id)
+        books = db.session.scalars(query)
 
     return [book.to_dict() for book in books]
 
