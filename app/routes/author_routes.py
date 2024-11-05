@@ -58,3 +58,8 @@ def get_all_authors():
 
     return [author.to_dict() for author in authors], 200
 
+@author_bp.get("/<author_id>/books")
+def get_all_book_by_author(author_id):
+    author = validate_model(Author, author_id)
+
+    return [book.to_dict for book in author.books], 200
